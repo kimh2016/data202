@@ -1,0 +1,23 @@
+---
+title: "testing"
+author: "Hansol Kim"
+date: "10/27/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+gapminder::gapminder_unfiltered
+```
+
+## R Markdown
+
+```{r}
+smoking_rate <- read_csv('data.csv')
+
+ggplot(smoking_rate, aes(x = FactValueNumeric, 
+                    y = Location)) +
+  geom_point(size = 0.1)
+```
+

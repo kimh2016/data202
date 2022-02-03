@@ -1,0 +1,67 @@
+---
+title: "exam1"
+author: "Hansol Kim"
+date: "10/17/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r}
+1.
+a)
+car_prices %>% 
+   ggplot(aes(x = mileage, y = price / 1000, color = type, shape = type)) + 
+   geom_point() +
+   scale_x_continuous(label = comma) +
+   labs( x = "Mileage (mi)",
+   y = "Price ($1000)")
+
+b)
+car_prices %>% mutate(median = case_when(mileage < median(mileage) ~ "Low mileage", 
+mileage > median(mileage) ~ "High mileage"))  %>% 
+ggplot(aes(x = price / 1000, y = fct_reorder(type, price), color = median)) + geom_boxplot() +
+labs(x = "Price ($1000)", y = " ", color = " ")
+
+
+
+2. 
+a)
+car_prices  %>% group_by(make)  %>% summarize(count = n())  %>% arrange(desc(count))  %>% 
+knitr::kable() 
+
+b)
+car_prices %>% filter(doors == 4)  %>%  group_by(type)  %>% 
+summarize(average_price = median(price))  %>% arrange(desc(average_price))  %>% 
+knitr::kable() 
+
+3.
+a)
+
+
+b)
+# How many rows didn't match?
+car_prices_and_eco <- car_prices  %>% 
+   mutate(models = str_to_upper(model)) 
+car_prices_and_eco %>% 
+   left_join(fuel_eco_avg, by = c("models" = "carline_name"))
+
+c)
+car_prices_and_eco_longer <- car_prices_and_eco  %>% 
+pivot_longer(cols = c(city, highway, combined), names_to ="Measure" , values_to = "value") 
+
+car_prices_and_eco_longer %>% 
+ggplot(aes(x = value, y = price / 1000, color = Measure)) +
+ylim(10,47) +
+geom_smooth() + 
+geom_point(alpha = 0.5)
+```
+
